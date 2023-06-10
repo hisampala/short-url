@@ -11,10 +11,10 @@ WORKDIR /app
 COPY package*.json ./
 COPY --from=dev /app/node_modules ./node_modules
 COPY . .
-
 RUN npm install -g prisma
-RUN  prisma migrate dev --name init  
-RUN  prisma generate 
+ENV DATABASE_URL="file:./dev.db"
+RUN prisma migrate dev --name init  
+RUN prisma generate 
 RUN npm run build
 
 FROM node:18-alpine3.16 as npm
